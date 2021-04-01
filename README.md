@@ -3,6 +3,7 @@
 > this project is only at starting up stage.
 
 ### todos
+```
 [-] setup GUI
     [√] basic MOS test UI & logic
     [ ] login & sucess modals
@@ -17,7 +18,7 @@
     [ ] communication protocol
     [ ] importing new surveys
     [ ] export experiment results
-
+```
 
 ## Project setup
 ```
