@@ -1,6 +1,12 @@
 <template>
     <div class="player">
-        <av-waveform :audio-src="audio_link" :symmetric="true"></av-waveform>
+        <av-waveform
+            :playtime-slider-color="'#fafafa'"
+            :played-line-color="'#444444'"
+            :noplayed-line-color="'#49A6A6'"
+            :audio-src="audio_link"
+            :symmetric="true"
+        ></av-waveform>
     </div>
 </template>
 
@@ -14,7 +20,7 @@ export default {
 </script>
 
 <style scoped>
-.player{
+.player {
     margin-top: 1em;
     margin-bottom: 1em;
 }

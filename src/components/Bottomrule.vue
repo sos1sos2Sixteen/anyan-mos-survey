@@ -1,6 +1,6 @@
 <template>
     <!-- <b-navbar toggleable="lg" type="dark" variant="default" fixed="bottom"> -->
-        <b-progress :value="bar_value" :variant="bar_variant"></b-progress>
+        <b-progress class="fixed-bottom" :value="bar_value" :variant="bar_variant" ></b-progress>
     <!-- </b-navbar> -->
 </template>
 

@@ -12,8 +12,11 @@
     "bootstrap": "^4.6.0",
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.6.5",
+    "js-cookie": "^2.2.1",
+    "markduckjs": "0.0.8",
     "vue": "^2.6.11",
-    "vue-audio-visual": "^2.2.2"
+    "vue-audio-visual": "^2.2.2",
+    "vue-router": "^3.5.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

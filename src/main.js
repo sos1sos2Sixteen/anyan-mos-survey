@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import VueRouter from 'vue-router'
 // import * as Vue from "vue"
 import App from './App.vue'
 import AudioVisual from 'vue-audio-visual'
@@ -15,8 +16,13 @@ Vue.use(IconsPlugin)
 
 Vue.use(AudioVisual)
 
+Vue.use(VueRouter)
+
 Vue.config.productionTip = false
 
+
+const router = new VueRouter({routes : []})
 new Vue({
   render: h => h(App),
+  router
 }).$mount('#app')
