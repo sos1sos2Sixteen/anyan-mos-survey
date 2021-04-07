@@ -4,19 +4,19 @@
 
 ### todos
 ```
-[-] setup GUI
+[√] setup GUI
     [√] basic MOS test UI & logic
-    [ ] login & sucess modals
-    [ ] adaptive survey form from description
-[ ] front-end communication
-    [ ] request survey description
-    [ ] basic login
+    [√] login & sucess modals
+    [√] adaptive survey form from description
+[-] front-end communication
+    [√] request survey description
+    [√] basic login
     [ ] restore state
-    [ ] other communications with backend
-[ ] back-end server (maybe in a seperate repo)
-    [ ] database
-    [ ] communication protocol
-    [ ] importing new surveys
+    [√] other communications with backend
+[-] back-end server (maybe in a seperate repo)
+    [√] database
+    [√] communication protocol
+    [√] importing new surveys
     [ ] export experiment results
 ```
 
