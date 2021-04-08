@@ -8,16 +8,18 @@
     [√] basic MOS test UI & logic
     [√] login & sucess modals
     [√] adaptive survey form from description
-[-] front-end communication
+[√] front-end communication
     [√] request survey description
     [√] basic login
-    [ ] restore state
+    [√] restore state
     [√] other communications with backend
-[-] back-end server (maybe in a seperate repo)
+[√] back-end server (maybe in a seperate repo)
     [√] database
     [√] communication protocol
     [√] importing new surveys
-    [ ] export experiment results
+    [√] export experiment results
+-----------------------------------------------Phase I complete
+
 ```
 
 ## Project setup

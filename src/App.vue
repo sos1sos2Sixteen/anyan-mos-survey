@@ -7,7 +7,11 @@
             :page_num="current.page_num"
         />
         <Bottomrule :bar_value="current_progress" :bar_ends="is_finished" />
-        <Sidelist :pages="page_state" @page-flip="onPageflip" :page_num="current.page_num"/>
+        <Sidelist
+            :pages="page_state"
+            @page-flip="onPageflip"
+            :page_num="current.page_num"
+        />
         <component
             :is="current.survey_page_instance"
             :v-if="current.inited"
@@ -108,6 +112,7 @@ export default {
                 error_message: "",
                 inited: false,
                 survey_page_instance: HelloWorld,
+                survey_key: -1,
             },
 
             description: {
@@ -188,8 +193,6 @@ export default {
         } else {
             this.current.overlay_state = Overlay.login;
         }
-        // console.log(this.$route.query);
-        // this.start_load_survey_content()
     },
     methods: {
         onlogout() {
@@ -201,17 +204,36 @@ export default {
             this.current.page_num = pg.target.page_num;
         },
         onSubmission(result) {
-            // called on submission from survey page
             const { page_num, scores } = result;
-            // console.log(page_num);
-            this.page_state[page_num].scores = scores;
-            this.page_state[page_num].state = Page.done;
-            this.nextPage();
+            axios
+                .post("/survey/submit", {
+                    instance_id: this.current.survey_key,
+                    page_num: page_num,
+                    scores: scores,
+                })
+                .then((response) => {
+                    if (response.data.succ) {
+                        // a success response alters the front-end state
+                        this.page_state[page_num].scores = scores;
+                        this.page_state[page_num].state = Page.done;
+                        if (this.is_finished) {
+                            this.current.overlay_state = Overlay.succ;
+                        }
+                    } else {
+                        // get application error
+                        alert(
+                            `something went wrong submitting the last page, please return and re-sbumit ${page_num}`
+                        );
+                    }
+                })
+                .catch(() => {
+                    // get network error
+                    alert(
+                        `something went wrong submitting the last page , please return and re-sbumit${page_num}`
+                    );
+                });
 
-            if (this.is_finished) {
-                // TODO : if finished, roll celebration flag
-                this.current.overlay_state = Overlay.succ;
-            }
+            this.nextPage();
         },
         nextPage() {
             // called by onSubmission to flip to nextpage
@@ -242,7 +264,6 @@ export default {
                     survey_key: this.$route.query.survey_id,
                 })
                 .then((response) => {
-                    // console.log(response.data);
                     if (response.data.succ) {
                         //
                         this.render_survey_content(response.data.data);
@@ -253,8 +274,7 @@ export default {
                         this.current.error_message = response.data.data;
                     }
                 })
-                .catch((e) => {
-                    console.log(e);
+                .catch(() => {
                     this.current.overlay_state = Overlay.error;
                     alert(`something went wrong during fetching survey`);
                 });
@@ -263,6 +283,7 @@ export default {
         render_survey_content(content) {
             /**
              * content = {
+             *      instance_id : keyid,
              *      description : {
              *          "survey_group" : string,
              *          "survey_name"  : string,
@@ -273,9 +294,9 @@ export default {
              * }
              */
 
-            const { description, state } = content;
+            const { instance_id, description, state } = content;
 
-            console.log(description);
+            this.current.survey_key = instance_id;
 
             // 1. deal with description
             // 1.1 response
@@ -304,18 +325,29 @@ export default {
 
             // 2. deal with state
             console.log(state);
+            // state : [{page_num : int, score : {name1 : {v : score}}}]
 
+            // initialize local state
             this.page_state = description.survey_content.stimuli.map(
                 (stm, idx) => {
-                    const t_scores = {}
-                    this.response.forEach((resp)=>{t_scores[resp.name] = {v:INVALID_SCORE}})
+                    const t_scores = {};
+                    this.response.forEach((resp) => {
+                        t_scores[resp.name] = { v: INVALID_SCORE };
+                    });
                     return {
                         page_num: idx,
                         state: Page.todo,
-                        scores: t_scores        // {name : {v: value}} because binded objects can't be basic 
+                        scores: t_scores, // {name : {v: value}} because binded objects can't be basic
                     };
                 }
             );
+
+            // update local state to server state
+            state.forEach((stt) => {
+                const { page_num, score } = stt;
+                this.page_state[page_num].state = Page.done;
+                this.page_state[page_num].scores = score;
+            });
 
             this.current.inited = true;
             this.current.survey_page_instance = SurveyPage;

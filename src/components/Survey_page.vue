@@ -100,8 +100,6 @@ export default {
     },
 
     created() {
-        console.log(`created resposne`);
-        console.log(this.page_state);
         this.response.forEach((resp) => {
             this.form_data[resp.name] = this.page_state.scores[resp.name];
         });
