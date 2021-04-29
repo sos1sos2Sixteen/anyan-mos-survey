@@ -93,6 +93,8 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { Overlay, Page, response_to_enum, INVALID_SCORE } from "./headers";
 
+// new line from local
+
 export default {
     name: "App",
     components: {
