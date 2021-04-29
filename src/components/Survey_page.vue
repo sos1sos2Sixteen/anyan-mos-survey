@@ -18,22 +18,34 @@
                 <b-col cols="3"></b-col>
                 <b-col cols="6">
                     <b-form @submit="onSubmit">
-                        <b-input-group
-                            class="spaced"
-                            v-for="(resp, idx) in response"
-                            :key="idx"
-                            :prepend="resp.name"
-                            :append="to_equal_width(form_data[resp.name].v)"
-                        >
-                            <b-form-input
-                                id="range-mos"
-                                v-model="form_data[resp.name].v"
-                                type="range"
-                                min="1"
-                                max="5"
-                                step="0.5"
-                            ></b-form-input>
-                        </b-input-group>
+                        <div v-for="(resp, idx) in response" :key="idx">
+                            <b-input-group
+                                v-if="is_MOS(resp.type)"
+                                class="spaced"
+                                :prepend="resp.name"
+                                :append="to_equal_width(form_data[resp.name].v)"
+                            >
+                                <b-form-input
+                                    id="range-mos"
+                                    v-model="form_data[resp.name].v"
+                                    type="range"
+                                    min="1"
+                                    max="5"
+                                    step="0.5"
+                                ></b-form-input>
+                            </b-input-group>
+
+                            <b-form-group
+                                v-if="is_ABX(resp.type)"
+                                :label="resp.name"
+                            >
+                                <b-form-radio-group v-model="form_data[resp.name].v">
+                                    <b-form-radio value="A">A</b-form-radio>
+                                    <b-form-radio value="X">X</b-form-radio>
+                                    <b-form-radio value="B">B</b-form-radio>
+                                </b-form-radio-group>
+                            </b-form-group>
+                        </div>
 
                         <b-button class="spaced" type="submit" variant="primary"
                             >Submit</b-button
@@ -51,7 +63,7 @@ import Player from "./Player.vue";
 import markduck from "markduckjs";
 import rehypePrism from "@mapbox/rehype-prism";
 import "prismjs/themes/prism.css";
-import { INVALID_SCORE } from "../headers";
+import { INVALID_SCORE, Response_type } from "../headers";
 
 // let dcopy = function(x) {
 //     return JSON.parse(JSON.stringify(x))
@@ -119,6 +131,13 @@ export default {
         to_equal_width(score) {
             // score : string
             return `${Number(score).toFixed(1)}`;
+        },
+
+        is_MOS(ty) {
+            return ty == Response_type.MOS;
+        },
+        is_ABX(ty) {
+            return ty == Response_type.ABX;
         },
     },
 };

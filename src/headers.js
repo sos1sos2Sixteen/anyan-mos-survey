@@ -16,12 +16,19 @@ const Page = {
 };
 
 const Response_type = {
-    MOS : 0
+    MOS : 0,
+    ABX : 1
 };
 
 function response_to_enum  (resp_str) {
+    /**
+     * convert resposne type string from server to the above enum, probabily should be implemented 
+     * with some sort of reflection but i'm to lazy to dig into js for this.
+     * manually sync with `Response_type` should be fine
+     */
     return {
-        "MOS" : Response_type.MOS
+        "MOS" : Response_type.MOS,
+        "ABX" : Response_type.ABX
     }[resp_str]
 }
 
